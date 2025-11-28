@@ -22,7 +22,7 @@ class ExpectationCollection implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<int, ResponseExpectationInterface>
+     * @return ArrayIterator<int|string, ResponseExpectationInterface>
      */
     public function getIterator(): ArrayIterator
     {

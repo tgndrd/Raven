@@ -25,7 +25,18 @@ class Headers implements IteratorAggregate, Stringable
         }
 
         foreach ($headers as $name => $values) {
-            $this->set($name, $values);
+            if (\is_string($values)) {
+                $this->set($name, $values);
+            } elseif (\is_array($values)) {
+                foreach ($values as $value) {
+                    if (!\is_string($value)) {
+                        throw new InvalidArgumentException('Header values must be string[]|string.');
+                    }
+                    $this->set($name, $value);
+                }
+            } else {
+                throw new InvalidArgumentException('Header values must be string[]|string.');
+            }
         }
     }
 
