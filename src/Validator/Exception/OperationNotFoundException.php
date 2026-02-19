@@ -12,7 +12,7 @@ class OperationNotFoundException extends RuntimeException implements ValidationE
         public readonly RequestInterface $request,
         Throwable $previous = null
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             'API operation for request [%s] %s hasn\'t been found.',
             $request->getMethod(),
             $request->getUri()

@@ -10,7 +10,7 @@ class GenericException extends RuntimeException implements ValidationException
     public function __construct(
         Throwable $previous
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             'Something went wrong: %s.',
             $previous->getMessage()
         );

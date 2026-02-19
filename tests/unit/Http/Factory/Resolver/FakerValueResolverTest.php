@@ -61,7 +61,7 @@ final class FakerValueResolverTest extends TestCase
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = $this->createStub(Generator::class);
+        $generator = self::createStub(Generator::class);
         $generator
             ->expects(self::once())
             ->method('__call')
@@ -89,7 +89,7 @@ final class FakerValueResolverTest extends TestCase
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = $this->createStub(Generator::class);
+        $generator = self::createStub(Generator::class);
         $generator
             ->expects(self::once())
             ->method('__call')
@@ -113,7 +113,7 @@ final class FakerValueResolverTest extends TestCase
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = $this->createStub(Generator::class);
+        $generator = self::createStub(Generator::class);
         $generator
             ->expects(self::never())
             ->method('__call');

@@ -14,7 +14,7 @@ class ResponseNotExpectedException extends RuntimeException implements Validatio
         public readonly ResponseInterface $response,
         Throwable $previous
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             'API response with status code %d isn\'t defined in the spec for request [%s] %s.',
             $response->getStatusCode(),
             $request->getMethod(),

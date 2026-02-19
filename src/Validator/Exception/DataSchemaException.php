@@ -12,7 +12,7 @@ class DataSchemaException extends RuntimeException implements ValidationExceptio
         public readonly string $path,
         Throwable $previous
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             "Data validation failed for property \"%s\", invalid value: %s\n\n> %s",
             $path,
             var_export($value, true),

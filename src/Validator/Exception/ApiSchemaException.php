@@ -10,7 +10,7 @@ class ApiSchemaException extends RuntimeException implements ValidationException
     public function __construct(
         Throwable $previous
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             'Something went wrong with the API schema: %s.',
             $previous->getMessage()
         );

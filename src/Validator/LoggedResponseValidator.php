@@ -16,7 +16,7 @@ class LoggedResponseValidator implements ResponseValidatorInterface
 
     public function validate(ResponseInterface $response, RequestInterface $request): void
     {
-        $this->logger->debug(sprintf(
+        $this->logger->debug(\sprintf(
             'Start testing Response: [%d] %s',
             $response->getStatusCode(),
             $response->getReasonPhrase()
@@ -24,7 +24,7 @@ class LoggedResponseValidator implements ResponseValidatorInterface
 
         $this->decorated->validate($response, $request);
 
-        $this->logger->debug(sprintf(
+        $this->logger->debug(\sprintf(
             'Finish testing Response: [%d] %s',
             $response->getStatusCode(),
             $response->getReasonPhrase()
