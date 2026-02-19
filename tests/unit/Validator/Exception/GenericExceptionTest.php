@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CHStudio\RavenTest\Validator\Expectation;
+namespace CHStudio\RavenTest\Validator\Exception;
 
 use CHStudio\Raven\Validator\Exception\GenericException;
 use CHStudio\Raven\Validator\Exception\ValidationException;

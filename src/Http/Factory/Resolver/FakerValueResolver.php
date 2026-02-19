@@ -38,7 +38,7 @@ class FakerValueResolver implements ValueResolverInterface
             );
         } catch (InvalidArgumentException) {
         } catch (JsonException $error) {
-            $message = sprintf(
+            $message = \sprintf(
                 "Can't extract the arguments to call method %s: [%s]",
                 $matches[1],
                 $matches[2]

@@ -40,7 +40,7 @@ class Headers implements IteratorAggregate, Stringable
         foreach ($this->headers as $name => $values) {
             $name = ucwords($name, '-');
             foreach ($values as $value) {
-                $asString .= sprintf('%s: %s', $name, $value).PHP_EOL;
+                $asString .= \sprintf('%s: %s', $name, $value).PHP_EOL;
             }
         }
 

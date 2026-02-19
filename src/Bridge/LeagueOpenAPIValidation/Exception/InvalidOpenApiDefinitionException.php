@@ -9,7 +9,7 @@ class InvalidOpenApiDefinitionException extends InvalidArgumentException
 {
     public function __construct(Throwable $previous)
     {
-        parent::__construct(sprintf(
+        parent::__construct(\sprintf(
             "The given OpenApi definition can't be loaded:\n%s -> %s",
             $previous::class,
             $previous->getMessage()

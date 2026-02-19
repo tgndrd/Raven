@@ -16,7 +16,7 @@ class StatusCode implements ResponseExpectationInterface
         return $message->getStatusCode() === $this->statusCode
             ? null
             : new ExpectationFailedException(
-                sprintf('Unexpected status code %s, expected %s', $message->getStatusCode(), $this->statusCode),
+                \sprintf('Unexpected status code %s, expected %s', $message->getStatusCode(), $this->statusCode),
                 $this
             );
     }

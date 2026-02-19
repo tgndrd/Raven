@@ -15,13 +15,13 @@ class LoggedRequestValidator implements RequestValidatorInterface
 
     public function validate(RequestInterface $request): void
     {
-        $this->logger->debug(sprintf(
+        $this->logger->debug(\sprintf(
             "Start testing Request: [%s] %s",
             $request->getMethod(),
             $request->getUri()
         ));
         $this->decorated->validate($request);
-        $this->logger->debug(sprintf(
+        $this->logger->debug(\sprintf(
             'Finish testing Request: [%s] %s',
             $request->getMethod(),
             $request->getUri()

@@ -23,7 +23,7 @@ class Factory
     {
         if (!is_readable($path)) {
             throw new InvalidArgumentException(
-                sprintf('Filename given isn\'t readable: %s', $path)
+                \sprintf('Filename given isn\'t readable: %s', $path)
             );
         }
 
@@ -36,7 +36,7 @@ class Factory
     {
         if (!is_readable($path)) {
             throw new InvalidArgumentException(
-                sprintf('Filename given isn\'t readable: %s', $path)
+                \sprintf('Filename given isn\'t readable: %s', $path)
             );
         }
 
