@@ -14,7 +14,7 @@ class Factory
 
     public function __construct(
         private readonly ValidatorBuilder $validator,
-        ValidationExceptionMapper $mapper = null
+        ?ValidationExceptionMapper $mapper = null
     ) {
         $this->mapper = $mapper ?? new ValidationExceptionMapper();
     }

@@ -19,7 +19,7 @@ class Executor implements ExecutorInterface
 
     public function execute(
         RequestInterface $request,
-        ExpectationCollection $expectations = null
+        ?ExpectationCollection $expectations = null
     ): void {
         $this->requestValidator->validate($request);
         $response = $this->client->sendRequest($request);
