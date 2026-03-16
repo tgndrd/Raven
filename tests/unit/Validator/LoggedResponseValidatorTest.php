@@ -15,8 +15,8 @@ final class LoggedResponseValidatorTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $decorated = $this->createMock(ResponseValidatorInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
+        $decorated = self::createStub(ResponseValidatorInterface::class);
+        $logger = self::createStub(LoggerInterface::class);
 
         $factory = new LoggedResponseValidator($logger, $decorated);
 
@@ -26,7 +26,7 @@ final class LoggedResponseValidatorTest extends TestCase
     public function testItLogsRequestAtDebugLevel(): void
     {
         $decorated = $this->createMock(ResponseValidatorInterface::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
         $response = $this->createMock(ResponseInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -37,16 +37,19 @@ final class LoggedResponseValidatorTest extends TestCase
         $response
             ->expects(self::exactly(2))
             ->method('getReasonPhrase')
-            ->willReturn('I\'m not a teapost');
+            ->willReturn('I\'m not a teapot');
 
+        $invokedCount = self::exactly(2);
         $logger
-            ->expects(self::exactly(2))
+            ->expects($invokedCount)
             ->method('debug')
-            ->withConsecutive(
-                ['Start testing Response: [408] I\'m not a teapost'],
-                ['Finish testing Response: [408] I\'m not a teapost']
-            );
-
+            ->willReturnCallback(function ($parameters) use ($invokedCount): void {
+                $expectedParameters = match ($invokedCount->numberOfInvocations()) {
+                    1 => 'Start testing Response: [408] I\'m not a teapot',
+                    2 => 'Finish testing Response: [408] I\'m not a teapot',
+                };
+                $this->assertSame($expectedParameters, $parameters);
+            });
         $decorated
             ->expects(self::once())
             ->method('validate')

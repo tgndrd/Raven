@@ -7,9 +7,9 @@ namespace CHStudio\RavenTest\Validator\Exception;
 use CHStudio\Raven\Validator\Exception\OperationNotFoundException;
 use CHStudio\Raven\Validator\Exception\ValidationException;
 use Exception;
-use League\Uri\Contracts\UriInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 final class OperationNotFoundExceptionTest extends TestCase
 {

@@ -24,10 +24,7 @@ final class UriTest extends TestCase
         new Uri(['parameters' => []]);
     }
 
-    /**
-     * @dataProvider provideItCanBeBuiltFromArrayCases
-     *
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItCanBeBuiltFromArrayCases')]
     public function testItCanBeBuiltFromArray($array, $expected): void
     {
         $uri = new Uri($array);
@@ -41,7 +38,7 @@ final class UriTest extends TestCase
                 'base' => 'http://param.host.int?value=key',
                 'parameters' => [
                     'param' => 'value',
-                    'int' => 0
+                    'int' => '0'
             ]], 'http://value.host.0?value=key'
         ];
 
@@ -61,15 +58,12 @@ final class UriTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideItCantBeBuiltFromOtherValuesCases
-     *
-     */
-    public function testItCantBeBuiltFromOtherValues(): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItCantBeBuiltFromOtherValuesCases')]
+    public function testItCantBeBuiltFromOtherValues($value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Uri(0);
+        new Uri($value);
     }
 
     public static function provideItCantBeBuiltFromOtherValuesCases(): iterable
@@ -77,6 +71,7 @@ final class UriTest extends TestCase
         yield [0];
         yield [[]];
         yield [['parameters' => []]];
+        yield [['parameters' => ['int' => 0]]];
         yield [null];
     }
 }

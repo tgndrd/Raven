@@ -23,11 +23,11 @@ final class FactoryTest extends TestCase
         $leagueBuilder
             ->expects(self::once())
             ->method('getRequestValidator')
-            ->willReturn($this->createMock(PSR7RequestValidator::class));
+            ->willReturn(self::createStub(PSR7RequestValidator::class));
         $leagueBuilder
             ->expects(self::once())
             ->method('getResponseValidator')
-            ->willReturn($this->createMock(PSR7ResponseValidator::class));
+            ->willReturn(self::createStub(PSR7ResponseValidator::class));
 
         $factory = new Factory($leagueBuilder);
 

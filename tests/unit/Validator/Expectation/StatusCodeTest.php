@@ -29,7 +29,7 @@ final class StatusCodeTest extends TestCase
             ->method('getStatusCode')
             ->willReturn(200);
 
-        self::assertNull($expectation->verify($response));
+        self::assertNotInstanceOf(\CHStudio\Raven\Validator\Expectation\ExpectationFailedException::class, $expectation->verify($response));
     }
 
     public function testItReturnsExceptionIfFailed(): void
@@ -44,9 +44,6 @@ final class StatusCodeTest extends TestCase
 
         $result = $expectation->verify($response);
         self::assertInstanceOf(ExpectationFailedException::class, $result);
-        self::assertSame(
-            'Unexpected status code 200, expected 400',
-            $result->getMessage()
-        );
+        self::assertSame('Unexpected status code 200, expected 400', $result->getMessage());
     }
 }

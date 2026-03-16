@@ -17,8 +17,8 @@ final class LoggedErrorExecutorTest extends TestCase
     public function testCanBeBuilt(): void
     {
         $executor = new LoggedErrorExecutor(
-            $this->createMock(ExecutorInterface::class),
-            $this->createMock(LoggerInterface::class)
+            self::createStub(ExecutorInterface::class),
+            self::createStub(LoggerInterface::class)
         );
 
         self::assertInstanceOf(ExecutorInterface::class, $executor);
@@ -29,7 +29,7 @@ final class LoggedErrorExecutorTest extends TestCase
         $expectations = new ExpectationCollection();
         $executor = $this->createMock(ExecutorInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
 
         $executor
             ->expects(self::once())
@@ -48,7 +48,7 @@ final class LoggedErrorExecutorTest extends TestCase
         $expectations = new ExpectationCollection();
         $executor = $this->createMock(ExecutorInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
 
         $error = new GenericException(new \Exception('message'));
 

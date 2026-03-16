@@ -12,7 +12,7 @@ class Uri implements Stringable
     public function __construct(mixed $value)
     {
         if (\is_array($value)) {
-            if (!\is_string($value['base'])) {
+            if (!isset($value['base']) || !\is_string($value['base'])) {
                 throw new InvalidArgumentException(
                     'If you want to build an URI from an array, use the schema: [ base => string, ?parameters => [string => mixed]'
                 );

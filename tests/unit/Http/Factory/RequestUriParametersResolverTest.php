@@ -14,8 +14,8 @@ final class RequestUriParametersResolverTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $bodyResolver = $this->createMock(ValueResolverInterface::class);
-        $decorated = $this->createMock(RequestFactoryInterface::class);
+        $bodyResolver = self::createStub(ValueResolverInterface::class);
+        $decorated = self::createStub(RequestFactoryInterface::class);
 
         $factory = new RequestUriParametersResolver($bodyResolver, $decorated);
 
@@ -37,7 +37,7 @@ final class RequestUriParametersResolverTest extends TestCase
             ->expects(self::once())
             ->method('fromArray')
             ->with(['uri' => ['parameters' => ['c']]])
-            ->willReturn($this->createMock(RequestInterface::class));
+            ->willReturn(self::createStub(RequestInterface::class));
 
         (new RequestUriParametersResolver($bodyResolver, $decorated))
             ->fromArray(['uri' => ['parameters' => ['a' => 'b']]]);
@@ -54,7 +54,7 @@ final class RequestUriParametersResolverTest extends TestCase
             ->expects(self::once())
             ->method('fromArray')
             ->with([])
-            ->willReturn($this->createMock(RequestInterface::class));
+            ->willReturn(self::createStub(RequestInterface::class));
 
         (new RequestUriParametersResolver($bodyResolver, $decorated))
             ->fromArray([]);

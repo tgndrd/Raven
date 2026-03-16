@@ -60,14 +60,11 @@ final class HeadersTest extends TestCase
             'A' => ['B', 'C']
         ]);
 
-        self::assertSame(
-            <<<STRING
+        self::assertSame(<<<STRING
         Content-Type: application/json
         A: B
         A: C
 
-        STRING,
-            (string) $headers
-        );
+        STRING, (string) $headers);
     }
 }
