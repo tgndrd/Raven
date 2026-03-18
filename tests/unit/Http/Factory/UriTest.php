@@ -68,10 +68,11 @@ final class UriTest extends TestCase
 
     public static function provideItCantBeBuiltFromOtherValuesCases(): iterable
     {
-        yield [0];
-        yield [[]];
-        yield [['parameters' => []]];
-        yield [['parameters' => ['int' => 0]]];
+        yield "Not an array" => [0];
+        yield "Nothing in the parameters" => [[]];
+        yield "No base but valid parameters" => [['parameters' => []]];
+        yield [['base' => 'http://example.com', 'parameters' => 'not-an-array']];
+        yield [['base' => 'http://example.com', 'parameters' => ['int' => 0]]];
         yield [null];
     }
 }
