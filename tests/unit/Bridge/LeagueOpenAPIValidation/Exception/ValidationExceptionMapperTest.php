@@ -33,9 +33,7 @@ final class ValidationExceptionMapperTest extends TestCase
             )
         );
 
-        self::assertNull(
-            (new ValidationExceptionMapper())->map($exceptionChain)
-        );
+        self::assertNotInstanceOf(\CHStudio\Raven\Validator\Exception\ValidationException::class, (new ValidationExceptionMapper())->map($exceptionChain));
     }
 
     public function testItMapsSchemaMismatchException(): void
@@ -95,9 +93,10 @@ final class ValidationExceptionMapperTest extends TestCase
 
     public function testItMapsInvalidQueryArgs(): void
     {
+        $operationAddress = new OperationAddress('/path', 'GET');
         $invalidQueryArgsError = InvalidQueryArgs::becauseOfMissingRequiredArgument(
             'argument',
-            $this->createMock(OperationAddress::class),
+            $operationAddress,
             RequiredParameterMissing::fromName('argument')
         );
 

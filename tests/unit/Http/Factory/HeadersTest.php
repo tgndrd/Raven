@@ -19,13 +19,6 @@ final class HeadersTest extends TestCase
         self::assertInstanceOf(IteratorAggregate::class, $uri);
     }
 
-    public function testItFailsOnNonArrayParameter(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new Headers(false);
-    }
-
     public function testItCanBeFilledAndChecked(): void
     {
         $headers = new Headers(['Content-Type' => 'application/json']);
@@ -43,7 +36,7 @@ final class HeadersTest extends TestCase
 
         self::assertSame([], $headers->get('Non-Existing-Header'));
 
-        $headers->set('content-type', 'other/type');
+        $headers->append('content-type', 'other/type');
 
         self::assertSame(['application/json', 'other/type'], $headers->get('Content-Type'));
 
@@ -60,14 +53,37 @@ final class HeadersTest extends TestCase
             'A' => ['B', 'C']
         ]);
 
-        self::assertSame(
-            <<<STRING
+        self::assertSame(<<<STRING
         Content-Type: application/json
         A: B
         A: C
 
-        STRING,
-            (string) $headers
-        );
+        STRING, (string) $headers);
+
+        $headers->append('A', 'D');
+
+        self::assertSame(<<<STRING
+        Content-Type: application/json
+        A: B
+        A: C
+        A: D
+
+        STRING, (string) $headers);
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItCantBeBuiltFromOtherValuesCases')]
+    public function testItCantBeBuiltFromOtherValues($headers): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Headers($headers);
+    }
+
+    public static function provideItCantBeBuiltFromOtherValuesCases(): iterable
+    {
+        yield "Headers aren't array" => [0];
+        yield "Header name not a string" => [[0 => 'Value']];
+        yield "Header value not a string" => [['name' => 0]];
+        yield "Header value not a string inside array" => [['name' => [0]]];
     }
 }

@@ -15,16 +15,14 @@ final class FakerValueResolverTest extends TestCase
     public function testItCanBeBuilt(): void
     {
         $resolver = new FakerValueResolver(
-            $this->createMock(Generator::class),
-            $this->createMock(ValueResolverInterface::class)
+            self::createStub(Generator::class),
+            self::createStub(ValueResolverInterface::class)
         );
 
         self::assertInstanceOf(ValueResolverInterface::class, $resolver);
     }
 
-    /**
-     * @dataProvider provideItPassTheValueToNextResolverInDifferentCases
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItPassTheValueToNextResolverInDifferentCases')]
     public function testItPassTheValueToNextResolverInDifferent(mixed $parameter): void
     {
         $decorated = $this->createMock(ValueResolverInterface::class);
@@ -35,7 +33,7 @@ final class FakerValueResolverTest extends TestCase
             ->willReturn($parameter);
 
         $resolver = new FakerValueResolver(
-            $this->createMock(Generator::class),
+            self::createStub(Generator::class),
             $decorated
         );
 
@@ -52,16 +50,14 @@ final class FakerValueResolverTest extends TestCase
         yield ['abdr()>'];
     }
 
-    /**
-     * @dataProvider provideItResolveTheValueThroughFakerGeneratorCases
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItResolveTheValueThroughFakerGeneratorCases')]
     public function testItResolveTheValueThroughFakerGenerator(string $parameter, string $method, array $arguments): void
     {
         $decorated = $this->createMock(ValueResolverInterface::class);
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = self::createStub(Generator::class);
+        $generator = $this->createMock(Generator::class);
         $generator
             ->expects(self::once())
             ->method('__call')
@@ -89,7 +85,7 @@ final class FakerValueResolverTest extends TestCase
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = self::createStub(Generator::class);
+        $generator = $this->createMock(Generator::class);
         $generator
             ->expects(self::once())
             ->method('__call')
@@ -113,7 +109,7 @@ final class FakerValueResolverTest extends TestCase
         $decorated
             ->expects(self::never())
             ->method('resolve');
-        $generator = self::createStub(Generator::class);
+        $generator = self::createMock(Generator::class);
         $generator
             ->expects(self::never())
             ->method('__call');

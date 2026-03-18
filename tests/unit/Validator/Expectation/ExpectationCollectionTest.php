@@ -13,7 +13,7 @@ final class ExpectationCollectionTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $expectation = $this->createMock(ResponseExpectationInterface::class);
+        $expectation = self::createStub(ResponseExpectationInterface::class);
         $collection = new ExpectationCollection($expectation);
 
         self::assertInstanceOf(IteratorAggregate::class, $collection);

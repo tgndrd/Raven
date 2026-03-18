@@ -15,8 +15,8 @@ final class LoggedRequestValidatorTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $decorated = $this->createMock(RequestValidatorInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
+        $decorated = self::createStub(RequestValidatorInterface::class);
+        $logger = self::createStub(LoggerInterface::class);
 
         $factory = new LoggedRequestValidator($logger, $decorated);
 
@@ -43,13 +43,17 @@ final class LoggedRequestValidatorTest extends TestCase
             ->method('getUri')
             ->willReturn($uri);
 
+        $invokedCount = self::exactly(2);
         $logger
-            ->expects(self::exactly(2))
+            ->expects($invokedCount)
             ->method('debug')
-            ->withConsecutive(
-                ['Start testing Request: [GET] https://chstudio.fr'],
-                ['Finish testing Request: [GET] https://chstudio.fr']
-            );
+            ->willReturnCallback(function ($parameters) use ($invokedCount): void {
+                $expectedParameters = match ($invokedCount->numberOfInvocations()) {
+                    1 => 'Start testing Request: [GET] https://chstudio.fr',
+                    2 => 'Finish testing Request: [GET] https://chstudio.fr',
+                };
+                $this->assertSame($expectedParameters, $parameters);
+            });
 
         $decorated
             ->expects(self::once())

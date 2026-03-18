@@ -25,7 +25,22 @@ class Headers implements IteratorAggregate, Stringable
         }
 
         foreach ($headers as $name => $values) {
-            $this->set($name, $values);
+            if (!\is_string($name)) {
+                throw new InvalidArgumentException('Header name be a string.');
+            }
+
+            if (\is_string($values)) {
+                $this->append($name, $values);
+            } elseif (\is_array($values)) {
+                foreach ($values as $value) {
+                    if (!\is_string($value)) {
+                        throw new InvalidArgumentException('Header values must be string[]|string.');
+                    }
+                    $this->append($name, $value);
+                }
+            } else {
+                throw new InvalidArgumentException('Header values must be string[]|string.');
+            }
         }
     }
 
@@ -64,34 +79,21 @@ class Headers implements IteratorAggregate, Stringable
     }
 
     /**
-     * @return array<string|null>
+     * @return string[]
      */
     public function get(string $offset): array
     {
         return $this->headers[$this->normalizeName($offset)] ?? [];
     }
 
-    /**
-     * @param array<string>|string $values
-     */
-    public function set(string $offset, array|string $values): void
+    public function append(string $offset, string $value): void
     {
         $normalized = $this->normalizeName($offset);
 
-        if (\is_array($values)) {
-            $values = array_values($values);
-
-            if (!isset($this->headers[$normalized])) {
-                $this->headers[$normalized] = $values;
-            } else {
-                $this->headers[$normalized] = array_merge($this->headers[$normalized], $values);
-            }
+        if (!isset($this->headers[$normalized])) {
+            $this->headers[$normalized] = [$value];
         } else {
-            if (!isset($this->headers[$normalized])) {
-                $this->headers[$normalized] = [$values];
-            } else {
-                $this->headers[$normalized][] = $values;
-            }
+            $this->headers[$normalized][] = $value;
         }
     }
 }

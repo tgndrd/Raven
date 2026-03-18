@@ -13,6 +13,7 @@ use Exception;
 use League\OpenAPIValidation\PSR7\Exception\MultipleOperationsMismatchForRequest;
 use League\OpenAPIValidation\PSR7\Exception\NoOperation;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
+use League\OpenAPIValidation\PSR7\OperationAddress;
 use League\OpenAPIValidation\PSR7\RequestValidator as PSR7RequestValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -23,7 +24,7 @@ final class RequestValidatorTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $requestValidator = $this->createMock(PSR7RequestValidator::class);
+        $requestValidator = self::createStub(PSR7RequestValidator::class);
 
         $validator = new RequestValidator(
             $requestValidator,
@@ -36,12 +37,13 @@ final class RequestValidatorTest extends TestCase
     public function testItCanValidateRequest(): void
     {
         $requestValidator = $this->createMock(PSR7RequestValidator::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
 
         $requestValidator
             ->expects(self::once())
             ->method('validate')
-            ->with($request);
+            ->with($request)
+            ->willReturn(new OperationAddress('/path', 'GET'));
 
         (new RequestValidator(
             $requestValidator,
@@ -55,7 +57,7 @@ final class RequestValidatorTest extends TestCase
 
         $requestValidator = $this->createMock(PSR7RequestValidator::class);
         $validationMapper = $this->createMock(ValidationExceptionMapper::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
 
         $error = new Exception('Error');
 
@@ -74,15 +76,13 @@ final class RequestValidatorTest extends TestCase
         (new RequestValidator($requestValidator, $validationMapper))->validate($request);
     }
 
-    /**
-     * @dataProvider provideItCanCatchExceptionsCases
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideItCanCatchExceptionsCases')]
     public function testItCanCatchExceptions(Throwable $error, string $exception): void
     {
         $this->expectException($exception);
 
         $requestValidator = $this->createMock(PSR7RequestValidator::class);
-        $request = $this->createMock(RequestInterface::class);
+        $request = self::createStub(RequestInterface::class);
 
         $requestValidator
             ->expects(self::once())

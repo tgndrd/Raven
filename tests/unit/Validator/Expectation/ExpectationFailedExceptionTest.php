@@ -13,7 +13,7 @@ final class ExpectationFailedExceptionTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $failedExpectation = $this->createMock(ResponseExpectationInterface::class);
+        $failedExpectation = self::createStub(ResponseExpectationInterface::class);
         $exception = new ExpectationFailedException('message', $failedExpectation);
 
         self::assertInstanceOf(RuntimeException::class, $exception);

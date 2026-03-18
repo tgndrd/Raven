@@ -12,7 +12,7 @@ final class ArrayValueResolverTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $decorated = $this->createMock(ValueResolverInterface::class);
+        $decorated = self::createStub(ValueResolverInterface::class);
         $arrayResolver = new ArrayValueResolver($decorated);
 
         self::assertInstanceOf(ValueResolverInterface::class, $arrayResolver);
@@ -30,30 +30,32 @@ final class ArrayValueResolverTest extends TestCase
             ]
         ];
 
+        $invokedCount = self::exactly(3);
         $decorated = $this->createMock(ValueResolverInterface::class);
         $decorated
-            ->expects(self::exactly(3))
+            ->expects($invokedCount)
             ->method('resolve')
-            ->withConsecutive(
-                ['b'],
-                ['e'],
-                ['h'],
-            )
-            ->willReturn('updated');
+            ->willReturnCallback(function ($parameters) use ($invokedCount) {
+                $expectedParameters = match ($invokedCount->numberOfInvocations()) {
+                    1 => 'b',
+                    2 => 'e',
+                    3 => 'h',
+                };
+                $this->assertSame($expectedParameters, $parameters);
+
+                return 'updated';
+            });
 
         $arrayResolver = new ArrayValueResolver($decorated);
 
-        self::assertSame(
-            [
-                'a' => 'updated',
-                'c' => [
-                    'd' => 'updated',
-                    'f' => [
-                        'g' => 'updated'
-                    ]
+        self::assertSame([
+            'a' => 'updated',
+            'c' => [
+                'd' => 'updated',
+                'f' => [
+                    'g' => 'updated'
                 ]
-            ],
-            $arrayResolver->resolve($value)
-        );
+            ]
+        ], $arrayResolver->resolve($value));
     }
 }

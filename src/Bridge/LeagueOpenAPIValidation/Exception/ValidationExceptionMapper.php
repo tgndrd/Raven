@@ -50,7 +50,15 @@ class ValidationExceptionMapper
     {
         $breadCrumb = $lastError->dataBreadCrumb();
         if ($breadCrumb instanceof BreadCrumb) {
-            $crumbs = implode('.', $breadCrumb->buildChain());
+            $crumbs = array_reduce(
+                $breadCrumb->buildChain(),
+                static function (string $carry, mixed $value): string {
+                    $strValue = \is_int($value) || \is_string($value) ? (string) $value : '';
+
+                    return $carry !== '' ? $carry . '.' . $strValue : $strValue;
+                },
+                ''
+            );
         }
 
         return new DataSchemaException($lastError->data(), $crumbs ?? '', $lastError);

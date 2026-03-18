@@ -20,7 +20,7 @@ use InvalidArgumentException;
 use League\OpenAPIValidation\PSR7\Exception\NoResponseCode;
 use League\OpenAPIValidation\PSR7\OperationAddress;
 use League\OpenAPIValidation\PSR7\ResponseValidator as PSR7ResponseValidator;
-use League\Uri\Contracts\UriInterface;
+use Psr\Http\Message\UriInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -31,7 +31,7 @@ final class ResponseValidatorTest extends TestCase
 {
     public function testItCanBeBuilt(): void
     {
-        $responseValidator = $this->createMock(PSR7ResponseValidator::class);
+        $responseValidator = self::createStub(PSR7ResponseValidator::class);
 
         $validator = new ResponseValidator(
             $responseValidator,
@@ -220,11 +220,10 @@ final class ResponseValidatorTest extends TestCase
 
         [, $request, $response, $responseValidator] = $this->prepare();
 
-        $specFinderError = $this->createMock(Throwable::class);
+        $specFinderError = self::createStub(Throwable::class);
         // A bit hacky but getFile is a final method.
         $reflection = new \ReflectionObject($specFinderError);
         $property = $reflection->getProperty('file');
-        $property->setAccessible(true);
         $property->setValue($specFinderError, '/a/path/to/SpecFinder.php');
 
         $responseValidator
@@ -244,9 +243,9 @@ final class ResponseValidatorTest extends TestCase
         $validator->validate($response, $request);
     }
 
-    private function prepare(OpenApi $openApi = null, string $uriString = null): array
+    private function prepare(?OpenApi $openApi = null, ?string $uriString = null): array
     {
-        $openApi = $openApi ?? new OpenApi([
+        $openApi ??= new OpenApi([
             'paths' => new Paths([
                 '/' => new PathItem([
                     'get' => new Operation([])
@@ -271,7 +270,7 @@ final class ResponseValidatorTest extends TestCase
             ->expects(self::atLeastOnce())
             ->method('getMethod')
             ->willReturn('GET');
-        $response = $this->createMock(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $responseValidator = $this->createMock(PSR7ResponseValidator::class);
         $responseValidator

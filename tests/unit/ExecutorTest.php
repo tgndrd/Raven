@@ -21,9 +21,9 @@ final class ExecutorTest extends TestCase
     public function testCanBeBuilt(): void
     {
         $executor = new Executor(
-            $this->createMock(ClientInterface::class),
-            $this->createMock(RequestValidatorInterface::class),
-            $this->createMock(ResponseValidatorInterface::class),
+            self::createStub(ClientInterface::class),
+            self::createStub(RequestValidatorInterface::class),
+            self::createStub(ResponseValidatorInterface::class),
         );
 
         self::assertInstanceOf(ExecutorInterface::class, $executor);
@@ -34,8 +34,8 @@ final class ExecutorTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $requestValidator = $this->createMock(RequestValidatorInterface::class);
         $responseValidator = $this->createMock(ResponseValidatorInterface::class);
-        $request = $this->createMock(RequestInterface::class);
-        $response = $this->createMock(ResponseInterface::class);
+        $request = self::createStub(RequestInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $expectation = $this->createMock(ResponseExpectationInterface::class);
 
         $httpClient
@@ -70,8 +70,8 @@ final class ExecutorTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $requestValidator = $this->createMock(RequestValidatorInterface::class);
         $responseValidator = $this->createMock(ResponseValidatorInterface::class);
-        $request = $this->createMock(RequestInterface::class);
-        $response = $this->createMock(ResponseInterface::class);
+        $request = self::createStub(RequestInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $expectation = $this->createMock(ResponseExpectationInterface::class);
 
         $httpClient
